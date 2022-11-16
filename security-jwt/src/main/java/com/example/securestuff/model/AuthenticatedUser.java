@@ -2,6 +2,7 @@ package com.example.securestuff.model;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -14,12 +15,13 @@ public class AuthenticatedUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        Arrays.stream(user.getRoles().split(",")).map(role -> authorities.add(new SimpleGrantedAuthority(role)));
         return new ArrayList<>();
     }
 
     @Override
     public String getPassword() {
-        System.out.println(user.getPassword());
         return user.getPassword();
     }
 
